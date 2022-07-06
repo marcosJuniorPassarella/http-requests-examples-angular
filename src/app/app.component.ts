@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { map } from 'rxjs';
 import { Post } from './models/post.model';
 import { PostsService } from './services/posts.service';
 
@@ -25,12 +23,16 @@ export class AppComponent implements OnInit {
   }
 
   onFetchPosts() {
-    // Send Http request
     this.fetchPosts();
   }
 
   onClearPosts() {
-    // Send Http request
+    this.postService.deleteAllPosts().subscribe({
+      next: () => {
+        this.loadedPosts = [];
+      },
+      error: (err) => console.log(err),
+    });
   }
 
   private fetchPosts() {
