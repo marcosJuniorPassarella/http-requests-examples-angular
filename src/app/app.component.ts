@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
         next: (res) => console.log(res),
         error: (err) => console.log(err),
       });
+    this.fetchPosts();
   }
 
   onFetchPosts() {
