@@ -11,6 +11,7 @@ import { Post } from './models/post.model';
 })
 export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
+  isFetching = false;
 
   constructor(private http: HttpClient) {}
 
@@ -28,7 +29,6 @@ export class AppComponent implements OnInit {
         next: (res) => console.log(res),
         error: (err) => console.log(err),
       });
-    this.fetchPosts();
   }
 
   onFetchPosts() {
@@ -41,6 +41,7 @@ export class AppComponent implements OnInit {
   }
 
   private fetchPosts() {
+    this.isFetching = true;
     this.http
       .get<{ [key: string]: Post }>(`${environment.firebaseUrlApi}/posts.json`)
       .pipe(
@@ -56,9 +57,13 @@ export class AppComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
+          this.isFetching = false;
           this.loadedPosts = res;
         },
-        error: (err) => console.log(err),
+        error: (err) => {
+          this.isFetching = false;
+          console.log(err);
+        },
       });
   }
 }
