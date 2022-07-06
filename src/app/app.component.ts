@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -35,9 +36,22 @@ export class AppComponent implements OnInit {
   }
 
   private fetchPosts() {
-    this.http.get(`${environment.firebaseUrlApi}/posts.json`).subscribe({
-      next: (res) => console.log(res),
-      error: (err) => console.log(err),
-    });
+    this.http
+      .get(`${environment.firebaseUrlApi}/posts.json`)
+      .pipe(
+        map((responseData: any) => {
+          const postsArrray = [];
+          for (const key in responseData) {
+            if (responseData.hasOwnProperty(key)) {
+              postsArrray.push({ ...responseData[key], id: key });
+            }
+          }
+          return postsArrray;
+        })
+      )
+      .subscribe({
+        next: (res) => console.log(res),
+        error: (err) => console.log(err),
+      });
   }
 }
