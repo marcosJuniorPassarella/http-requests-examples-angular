@@ -34,4 +34,8 @@ export class PostsService {
         })
       );
   }
+
+  deleteAllPosts(): Observable<any> {
+    return this.http.delete(`${environment.firebaseUrlApi}/posts.json`);
+  }
 }
