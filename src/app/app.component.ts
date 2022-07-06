@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +15,12 @@ export class AppComponent implements OnInit {
   ngOnInit() {}
 
   onCreatePost(postData: { title: string; content: string }) {
-    // Send Http request
-    console.log(postData);
+    this.http
+      .post(`${environment.firebaseUrlApi}/posts.json`, postData)
+      .subscribe({
+        next: (res) => console.log(res),
+        error: (err) => console.log(err),
+      });
   }
 
   onFetchPosts() {
