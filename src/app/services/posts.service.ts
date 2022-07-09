@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { map, Observable, Subject, Subscription } from 'rxjs';
+import { map, Observable, Subject, Subscription, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
 
@@ -55,6 +55,10 @@ export class PostsService {
   }
 
   deleteAllPosts(): Observable<any> {
-    return this.http.delete(`${environment.firebaseUrlApi}/posts.json`);
+    return this.http
+      .delete(`${environment.firebaseUrlApi}/posts.json`, {
+        observe: 'events',
+      })
+      .pipe(tap((event) => console.log(event)));
   }
 }
