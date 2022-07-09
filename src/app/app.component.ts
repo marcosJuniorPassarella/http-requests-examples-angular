@@ -42,6 +42,10 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  onHandleError() {
+    this.error = null;
+  }
+
   private fetchPosts() {
     this.isFetching = true;
     this.postService.fetchPosts().subscribe({
