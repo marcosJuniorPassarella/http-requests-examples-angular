@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable, Subject, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
@@ -23,7 +23,12 @@ export class PostsService {
 
   fetchPosts(): Observable<any> {
     return this.http
-      .get<{ [key: string]: Post }>(`${environment.firebaseUrlApi}/posts.json`)
+      .get<{ [key: string]: Post }>(
+        `${environment.firebaseUrlApi}/posts.json`,
+        {
+          headers: new HttpHeaders({ 'Custom-Header': 'Hello' }),
+        }
+      )
       .pipe(
         map((responseData) => {
           const postsArrray: Post[] = [];
