@@ -22,6 +22,11 @@ export class PostsService {
   }
 
   fetchPosts(): Observable<any> {
+    // ADICIONANDO VÁRIOS QUERY PARAMS NA URL
+    let searchParams = new HttpParams();
+    searchParams = searchParams.append('print', 'pretty');
+    searchParams = searchParams.append('custom', 'key');
+
     return this.http
       .get<{ [key: string]: Post }>(
         `${environment.firebaseUrlApi}/posts.json`,
