@@ -14,7 +14,13 @@ export class PostsService {
 
   createPost(post: Post): Subscription {
     return this.http
-      .post<{ name: string }>(`${environment.firebaseUrlApi}/posts.json`, post)
+      .post<{ name: string }>(
+        `${environment.firebaseUrlApi}/posts.json`,
+        post,
+        {
+          observe: 'response',
+        }
+      )
       .subscribe({
         next: (res) => console.log(res),
         error: (err) => this.errorSubject$.next(err.message),
