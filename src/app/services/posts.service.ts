@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, Observable, Subject, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
@@ -27,6 +27,7 @@ export class PostsService {
         `${environment.firebaseUrlApi}/posts.json`,
         {
           headers: new HttpHeaders({ 'Custom-Header': 'Hello' }),
+          params: new HttpParams().set('print', 'pretty'),
         }
       )
       .pipe(
