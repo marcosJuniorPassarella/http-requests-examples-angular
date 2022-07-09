@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, Subscription } from 'rxjs';
+import { map, Observable, Subject, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
 
@@ -8,6 +8,8 @@ import { Post } from '../models/post.model';
   providedIn: 'root',
 })
 export class PostsService {
+  errorSubject$ = new Subject<{ message: string }>();
+
   constructor(private http: HttpClient) {}
 
   createPost(post: Post): Subscription {
@@ -15,7 +17,7 @@ export class PostsService {
       .post<{ name: string }>(`${environment.firebaseUrlApi}/posts.json`, post)
       .subscribe({
         next: (res) => console.log(res),
-        error: (err) => console.log(err),
+        error: (err) => this.errorSubject$.next(err.message),
       });
   }
 
