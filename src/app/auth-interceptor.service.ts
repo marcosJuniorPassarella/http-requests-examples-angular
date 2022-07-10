@@ -12,7 +12,15 @@ export class AuthInterceptorService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    console.log('Request in progress');
-    return next.handle(req);
+    // para não executar esse interceptor em todas as requisições
+    // você pode adicionar o seguinte:
+    // if(req.url === 'url que você deseja interceptar')
+
+    console.log(req.url);
+    // adicionado novos headers na requisição
+    const modifiedRequest = req.clone({
+      headers: req.headers.append('Auth', 'xyz'),
+    });
+    return next.handle(modifiedRequest);
   }
 }
